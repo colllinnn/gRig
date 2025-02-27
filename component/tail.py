@@ -198,13 +198,18 @@ class TailGuides(component.CreateGuides):
         utils.import_shapes()
 
         if "guideArmature" not in bpy.data.objects:
-            bpy.ops.object.armature_add(enter_editmode=True, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
-            arm = bpy.data.objects['Armature']
+            #bpy.ops.object.mode_set(mode='OBJECT')
+            bpy.ops.object.armature_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
+            bpy.context.object.data.name = "guideArmature"
+            bpy.context.object.name = "guideArmature"
+            armature_name = bpy.context.object.data.name
+            print(armature_name)
+            arm = bpy.data.armatures[armature_name]
             #delete base bone
-            arm.edit_bones.remove( arm.edit_bones['Bone'])
+            bpy.ops.object.mode_set(mode='EDIT')
+            print(arm)
+
             #rename armature
-            arm.name = 'guideArmature'
-            arm.data.name = 'guideArmature'
             bpy.ops.object.mode_set(mode='OBJECT')
 
         #add joints with custom property tags
